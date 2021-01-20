@@ -91,7 +91,8 @@ if __name__ == '__main__':
                 st.write(e)
                 st.subheader('Channel with this URL does not exist....Please enter a correct URL')
 
-        except Exception:
+        except Exception as e:
+            st.write(e)
             st.subheader('Could not get the video id, please paste the correct URL')
 
     else:
