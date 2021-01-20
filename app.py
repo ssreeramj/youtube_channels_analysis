@@ -70,15 +70,19 @@ if __name__ == '__main__':
                 video_df = get_all_videos(youtube=youtube, upload_id=upload_id)
                 # st.write(video_df.astype('object'))
 
+                st.text('Here is a chart where the size of the marker represents LIKE percent in the video')
                 likes_fig = get_likes_fig(video_df)
                 st.plotly_chart(likes_fig,  use_container_width=True)
 
+                st.text('Here is a chart where the size of the marker represents DISLIKE percent in the video')
                 dislikes_fig = get_dislikes_fig(video_df)
                 st.plotly_chart(dislikes_fig,  use_container_width=True)
 
+                st.text('This chart shows the yearwise uploads on the channel')
                 yearwise_fig = get_yearwise_plot(video_df)
                 st.plotly_chart(yearwise_fig, use_container_width=True)
 
+                st.text('This image shows the most frequent words used the title of the video')
                 title_wc = get_title_wordcloud(video_df)
                 st.pyplot(title_wc)
 
