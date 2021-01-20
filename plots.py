@@ -1,4 +1,5 @@
 import plotly.express as px
+import texthero as hero
 
 LABELS = { 
     'upload_year': 'Year', 
@@ -61,4 +62,11 @@ def get_yearwise_plot(df):
     )
 
     # fig.show()
+    return fig
+
+def get_title_wordcloud(df):
+    clean_title = df['vid_title'].pipe(hero.clean)
+    
+    fig = hero.visualization.wordcloud(clean_title)
+
     return fig

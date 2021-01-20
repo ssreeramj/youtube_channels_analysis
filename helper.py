@@ -2,6 +2,7 @@ import os
 import datetime
 import json
 
+import streamlit as st
 import numpy as np
 import pandas as pd
 
@@ -91,15 +92,15 @@ def preprocess_data(raw):
     raw[CATEGORY_COLS] = raw[CATEGORY_COLS].astype('category')
 
     raw['vid_dur'] = raw['duration'].apply(lambda x: convert_dur(x))
-    raw['likes_percent'] = raw['likes'] / (raw['likes'] + raw['dislikes'])
-    raw['dislikes_percent'] = raw['dislikes'] / (raw['likes'] + raw['dislikes'])
+    raw['likes_percent'] = raw['likes'] * 100 / (raw['likes'] + raw['dislikes'])
+    raw['dislikes_percent'] = raw['dislikes'] * 100 / (raw['likes'] + raw['dislikes'])
 
     raw['likes_percent'].fillna(0, inplace=True)
     raw['dislikes_percent'].fillna(0, inplace=True)
 
     return raw
 
-
+@st.cache()
 def get_all_videos(youtube, upload_id):
 
     all_data = []
