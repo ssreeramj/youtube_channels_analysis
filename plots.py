@@ -70,6 +70,8 @@ def get_yearwise_plot(df):
         )
     )
 
+    fig.update_traces(mode='markers+lines')
+
     # fig.show()
     return fig
 
