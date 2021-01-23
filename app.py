@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from googleapiclient.discovery import build
 
 from helper import get_all_videos
-from plots import get_likes_fig, get_dislikes_fig, get_yearwise_plot, get_title_wordcloud
+from plots import get_likes_fig, get_dislikes_fig, get_yearwise_plot, get_title_wordcloud, get_monthwise_plot, get_daywise_plot
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ st.set_page_config(
 
 
 if __name__ == '__main__':
-    st.title('Youtube Channel Analysis:rocket:')
+    st.title('Youtube Channel Analysis:rocket:')    
 
     url = st.text_input(label='Enter the url of a youtube channel.')
     pattern = re.compile('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+')
@@ -59,30 +59,45 @@ if __name__ == '__main__':
                 total_subs = upload_id_response['items'][0]['statistics']['subscriberCount'] 
                 total_videos = upload_id_response['items'][0]['statistics']['videoCount'] 
 
-                st.subheader(channel_title)
+                col1, col2, col3 = st.beta_columns(3)
+                col2.subheader(channel_title)
                 st.image(image_url,  use_column_width=True)
-                st.write(channel_desc)
+                with st.beta_expander(label='Channel Description'):
+                    st.write(channel_desc)
 
-                st.subheader(f'Total Videos: {total_videos}')
-                st.subheader(f'Total Views: {total_views}')
-                st.subheader(f'Total Subscribers: {total_subs}')
+                with st.beta_expander(label='Channel Statistics',):
+                    st.write(f'Total Videos: {total_videos}')
+                    st.write(f'Total Views: {total_views}')
+                    st.write(f'Total Subscribers: {total_subs}')
 
                 video_df = get_all_videos(youtube=youtube, upload_id=upload_id)
                 # st.write(video_df.astype('object'))
 
-                st.text('Here is a chart where the size of the marker represents LIKE percent in the video')
+                st.header('Charts')
+                st.markdown('##### (The dashed line in the below plots tells the median views of all videos)')
+
+                st.markdown('### This chart tells gives us the information about **LIKE** percentage in a video. The bigger the marker, greater the :+1: %.')
                 likes_fig = get_likes_fig(video_df)
                 st.plotly_chart(likes_fig,  use_container_width=True)
 
-                st.text('Here is a chart where the size of the marker represents DISLIKE percent in the video')
+                st.markdown('### This chart tells gives us the information about **DISLIKE** percentage in a video. The bigger the marker, greater the :-1: %.')
                 dislikes_fig = get_dislikes_fig(video_df)
                 st.plotly_chart(dislikes_fig,  use_container_width=True)
 
-                st.text('This chart shows the yearwise uploads on the channel')
+                st.markdown('### Here is the yearly video uploads on this channel')
                 yearwise_fig = get_yearwise_plot(video_df)
                 st.plotly_chart(yearwise_fig, use_container_width=True)
 
-                st.text('This image shows the most frequent words used the title of the video')
+                st.markdown('### Here is the monthly video uploads on this channel')
+                monthwise_fig = get_monthwise_plot(video_df)
+                st.plotly_chart(monthwise_fig, use_container_width=True)
+
+                st.markdown('### Here is the daywise video uploads on this channel')
+                daywise_fig = get_daywise_plot(video_df)
+                st.plotly_chart(daywise_fig, use_container_width=True)
+
+
+                st.markdown('### Most often used words in the video title')
                 title_wc = get_title_wordcloud(video_df)
                 st.pyplot(title_wc)
 
@@ -92,7 +107,7 @@ if __name__ == '__main__':
                 st.subheader('Channel with this URL does not exist....Please enter a correct URL')
 
         except Exception as e:
-            st.write(e)
+            # st.write(e)
             st.subheader('Could not get the video id, please paste the correct URL')
 
     else:

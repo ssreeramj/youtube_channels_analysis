@@ -12,7 +12,7 @@ COLUMNS = [
 ]
 
 INT_COLS = ['views', 'likes', 'dislikes', 'comment_counts']
-CATEGORY_COLS = ['upload_year', 'upload_month', 'upload_date', 'upload_hour', 'upload_minute', 'upload_second']
+CATEGORY_COLS = ['upload_year', 'upload_month', 'upload_date', 'upload_hour', 'upload_minute', 'upload_second', 'upload_day']
 
 def add_video_data(res):
     data = []
@@ -88,6 +88,9 @@ def preprocess_data(raw):
     raw['upload_second'] = raw['upload_time'].apply(
         lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z").second
     )
+    raw['upload_day'] = raw['upload_time'].apply(
+        lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%S%z").strftime('%w')
+    ) 
 
     raw[CATEGORY_COLS] = raw[CATEGORY_COLS].astype('category')
 
