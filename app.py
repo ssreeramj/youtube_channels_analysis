@@ -25,6 +25,9 @@ st.set_page_config(
 if __name__ == '__main__':
     st.title('Youtube Channel Analysis:rocket:')    
 
+    st.image('images/user_url.png', use_column_width=True)
+    st.image('images/id_url.png', use_column_width=True, caption='Examples of valid URLs')
+
     url = st.text_input(label='Enter the url of a youtube channel.')
     pattern = re.compile('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+')
 
