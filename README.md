@@ -91,7 +91,7 @@ You should have Python (version >= 3.6) installed in your system.
 ## More screenshots
 
 <p float="left">
-  <img src="images/char1.png" width=300" />
+  <img src="images/chart1.png" width=300" />
   <img src="images/chart2.png" width="300", height=217 /> 
 </p>
 
